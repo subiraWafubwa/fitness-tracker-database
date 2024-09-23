@@ -13,8 +13,8 @@ Welcome to Mr. Muscles Gym
 (2) Add workout session
 (3) Generate user progress
 (4) View user's sessions
-(5) Display tables
-(6) Revoke membership
+(5) View workouts
+(6) Display tables
 (7) Exit
 ''')
     
@@ -42,8 +42,8 @@ def create_user():
                         core_target = get_target_value("core")
                         legs_target = get_target_value("legs")
 
-                        # new_user = create_user(username, email)
-                        # new_targets = create_targets(username, month, back_and_shoulder_target, arms_target, core_target, legs_target, 0, 0, 0, 0)
+                        create_user(username, email)
+                        create_targets(username, month, back_and_shoulder_target, arms_target, core_target, legs_target, 0, 0, 0, 0)
                         print('\033[32m' + "\n(✓) New member has joined the gym\n" + '\033[0m')
                         
                         show_main_menu()
@@ -55,41 +55,102 @@ def create_user():
 # Add workout session
 def add_workout_session():
     print("\nCreating a new workout session...")
+    
+    # Get user input and ensure user exists
     while True:
         username = input("Enter username: ")
         existing_user = user_exists(username)
+        
         if not existing_user:
             print('\033[31m' + "(!) This user does not exist. Try again" + '\033[0m')
-        else:
+        else:            
             while True:
+                # Get the user's target for the month
                 target_id = get_target(username, month)
-                if get_target:
+                
+                if target_id:
                     print(f"\nAdd new session for {username} on {date}:")
+                    
+                    # Get the workout ID from user input
                     workout_id = get_workout_id()
-                    print(f"{username}, {date}, {target_id}, {workout_id}")
-                    # new_session = create_session(username, date, workout_id, target_id)
-
-                    break
+                    
+                    if workout_id:                        
+                        # Update the user's target progress based on the workout completed
+                        update_workout_progress(username, workout_id)
+                        
+                        # Create session
+                        create_session(username, date, workout_id, target_id)
+                    
+                    # After completing the session, go back to the main menu and break out of the loop
+                    show_main_menu()
+                    break  # Exit the loop after returning to the main menu
+                
                 else:
                     try:
+                        # If no target for the current month, prompt user to set new targets
                         print(f"No targets set found for {username} in {month}.")
                         print(f"\nSet workout targets for {month}...")
+
                         back_and_shoulder_target = get_target_value("back and shoulder")
                         arms_target = get_target_value("arms")
                         core_target = get_target_value("core")
                         legs_target = get_target_value("legs")
 
-                        # new_targets = create_targets(username, month, back_and_shoulder_target, arms_target, core_target, legs_target, 0, 0, 0, 0)
-                    finally:
-                        print(f"\nAdd new session for {username} on {date}:")
-                        target_id = get_target(username, month)
-                        workout_id = get_workout_id()
-                        # new_session = create_session(username, date, workout_id, target_id)
-
-                        ## Update target table
+                        # Create new targets for the user in the current month
+                        create_targets(
+                            username, month, back_and_shoulder_target, arms_target, core_target, legs_target, 
+                            back_and_shoulder_progress=0, arms_progress=0, core_progress=0, legs_progress=0
+                        )
                         
-                    break
-            
+                    finally:
+                        # Once targets are created, ask for the workout session again
+                        print(f"\nAdd new session for {username} on {date}:")
+                        
+                        # Get the target ID again after creating the target
+                        target_id = get_target(username, month)
+                        
+                        if target_id:
+                            workout_id = get_workout_id()
+                            
+                            if workout_id:
+                                # Log the session info
+                                print(f"{username}, {date}, {target_id}, {workout_id}")
+                                
+                                # Update the user's workout progress
+                                update_workout_progress(username, workout_id)
+                                
+                                # Create a new session record
+                                create_session(username, date, workout_id, target_id)
+
+                        # After completing the session, go back to the main menu and break
+                        show_main_menu()
+                        break  # Exit the loop after returning to the main menu
+
+# Generate user progress
+def get_progress():
+    while True:
+        username = input("Enter username: ")
+        print('\n')
+        existing_user = user_exists(username)
+        
+        if not existing_user:
+            print('\033[31m' + "(!) This user does not exist. Try again" + '\033[0m')
+        else:
+            get_progress_data(username)
+        break
+
+def get_user_sessions():
+    while True:
+        username = input("Enter username: ")
+        print('\n')
+        existing_user = user_exists(username)
+        
+        if not existing_user:
+            print('\033[31m' + "(!) This user does not exist. Try again" + '\033[0m')
+        else:
+            display_sessions_data(username)
+        break
+
 
 def main():
     while True:
@@ -101,13 +162,13 @@ def main():
         elif choice == "2":
             add_workout_session()
         elif choice == "3":
-            print("Feature not implemented yet.")
+            get_progress()
         elif choice == "4":
-            print("Feature not implemented yet.")
+            get_user_sessions()
         elif choice == "5":
-            print("Feature not implemented yet.")
+            get_exercises_by_workout()
         elif choice == "6":
-            print("Feature not implemented yet.")
+            display_tables()
         elif choice == "7":
             print("Exiting. Have a great day!")
             break
