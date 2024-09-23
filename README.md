@@ -15,7 +15,7 @@ from models import User, Target, Muscle, Exercise, BodySection, Session, Workout
 
 `Libraries`: The code imports libraries for regular expressions, date handling, pretty table formatting, and models for database interaction.
 
-`Constants`
+### Constants
 
 ```python
 month = datetime.now().strftime("%B")
@@ -23,6 +23,8 @@ date = datetime.now().date()
 ```
 
 Current Month and Date: Retrieves the current month and date for use in various functions.
+
+## Main Functions
 
 ```python
 def show_main_menu():
@@ -37,8 +39,6 @@ def show_main_menu():
     (7) Exit
     ''')
 ```
-
-## Main Functions
 
 `create_user()`: This function handles the creation of a new gym membership:
 
@@ -55,6 +55,10 @@ def show_main_menu():
 
 `get_user_sessions()`: Prompts for a username and displays all workout sessions associated with that user using display_sessions_data().
 
+`get_exercises_by_workout()`:
+
+`display_tables()`:
+
 ## Database Interaction
 
 This is the database structure for the application.
@@ -69,7 +73,11 @@ This is the database structure for the application.
 
 `exercises`: Contains a list of exercises with and intensity_id and body_section_id.
 
-`sessions`: Records everytime a user has completed a workout. Has
+`sessions`: Records everytime a user has completed a workout. It connects the targets and workouts to manage progress
+
+`body-section`: The particular body parts that are measured in targets and progress.
+
+`muscles`: Show the muscles being monitored.
 
 ## Other Functions
 
