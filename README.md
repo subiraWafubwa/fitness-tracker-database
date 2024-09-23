@@ -53,8 +53,9 @@ def show_main_menu():
 ## Adding Workout Sessions
 
 `add_workout_session()`: Prompts for a username to log a workout session.
-Checks if the user exists and retrieves their workout targets for the month.
-Allows the user to select a workout and updates their progress.
+
+- Checks if the user exists and retrieves their workout targets for the month.
+- Allows the user to select a workout and updates their progress.
 
 ## User Progress
 
@@ -83,7 +84,9 @@ def commit_session(instance):
 ## User Functions
 
 `create_user(username, email)`: Adds a new user to the database.
+
 `user_exists(value)`: Checks if a user (by username or email) exists in the database.
+
 `get_target(username, month)`: Checks for an existing target for the user and month.
 
 ## Target Functions
@@ -93,16 +96,19 @@ def commit_session(instance):
 ## Workout Management
 
 `create_session(...)`: Records a new workout session.
+
 `update_workout_progress(username, workout_id)`: Updates the progress for the user's workout based on the intensity of the workout completed.
 
 ## Data Retrieval
 
 `get_progress_data(username)`: Retrieves and displays the user's progress data in a formatted table.
+
 `display_sessions_data(username)`: Retrieves and displays all workout sessions for a user.
 
 ## Exercise Management
 
 `get_workout_id()`: Prompts the user to select a completed workout.
+
 `get_exercises_by_workout()`: Retrieves exercises associated with the chosen workout based on intensity and muscle group.
 
 ## Error Handling
